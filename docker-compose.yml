@@ -1,0 +1,76 @@
+# Use postgres/example user/password credentials
+
+services:
+
+  user-db:
+    image: postgres
+    restart: always
+    container_name: user-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: user-db
+
+    volumes:
+      - user-db:/var/lib/postgresql/data
+    networks:
+      fitness-app:
+
+  mongo:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      fitness-app:
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+      - "8181:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_SERVER: mongo
+    networks:
+      fitness-app:
+
+  rabbit-mq:
+    image: rabbitmq:4.0-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      fitness-app:
+
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:26.2.5
+    command: start-dev
+    ports:
+      - "8282:8080"
+    environment:
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+    networks:
+      - fitness-app
+
+
+
+
+volumes:
+  user-db:
+  mongo-data:
+networks:
+  fitness-app:

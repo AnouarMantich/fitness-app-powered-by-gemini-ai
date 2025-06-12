@@ -1,0 +1,29 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8282/realms/fitness-oauth2/protocol/openid-connect/certs
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: USER-SERVICE
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path= /api/v1/users/**
+            - id: AI-SERVICE
+              uri: lb://AI-SERVICE
+              predicates:
+                - Path= /api/v1/recommendations/**
+            - id: ACTIVITY-SERVICE
+              uri: lb://ACTIVITY-SERVICE
+              predicates:
+                - Path= /api/v1/activities/**
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 9999

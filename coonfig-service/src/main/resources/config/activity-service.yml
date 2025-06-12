@@ -1,0 +1,21 @@
+spring:
+  data:
+    mongodb:
+      database: fitnessActivities
+      uri: mongodb://localhost:27017/fitnessActivities
+  rabbitmq:
+    host: localhost
+    port: 5672
+    stream:
+      username: guest
+      password: guest
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+
+server:
+  port: 8082

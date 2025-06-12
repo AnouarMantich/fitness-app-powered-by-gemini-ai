@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: ai-service
+  config:
+    import: optional:configserver:http://localhost:8888/
+#  data:
+#    mongodb:
+#      database: fitnessRecommendations
+#      uri: mongodb://localhost:27017/fitnessRecommendations
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    stream:
+#      username: guest
+#      password: guest
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka/
+#
+#
+#server:
+#  port: 8083
+#
+#gemini:
+#  api:
+#    url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=
+#    key: AIzaSyDzEYbND2cOlCoVZzJKBh4SUOiYCbp2yZE
+
