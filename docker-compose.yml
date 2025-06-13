@@ -2,6 +2,88 @@
 
 services:
 
+  config-service:
+    image: mantichanouar/config-service
+    container_name: config-service
+    ports:
+      - "8888:8888"
+    environment:
+      - SPRING_PROFILES_ACTIVE=native
+      - SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS=classpath:/config
+    networks:
+      fitness-app:
+
+  discovery-service:
+    image: mantichanouar/discovery-service
+    container_name: discovery-service
+    ports:
+      - "8761:8761"
+    environment:
+      - EUREKA_CLIENT_FETCH_REGISTRY=false
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+    networks:
+      fitness-app:
+
+  user-service:
+    image: mantichanouar/user-service
+    container_name: user-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-service:8888/
+    networks:
+      fitness-app:
+    depends_on:
+      - config-service
+      - discovery-service
+      - user-db
+
+  activity-service:
+    image: mantichanouar/activity-service
+    container_name: activity-service
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-service:8888/
+    networks:
+      fitness-app:
+    depends_on:
+      - config-service
+      - discovery-service
+      - mongo
+      - rabbit-mq
+
+  ai-service:
+    image: mantichanouar/ai-service
+    container_name: ai-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-service:8888/
+    networks:
+      fitness-app:
+    depends_on:
+      - config-service
+      - discovery-service
+      - mongo
+      - rabbit-mq
+
+  api-gateway:
+    image: mantichanouar/api-gateway
+    container_name: api-gateway
+    ports:
+      - "9999:9999"
+    environment:
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-service:8888/
+    networks:
+      fitness-app:
+    depends_on:
+      - user-service
+      - keycloak
+      - activity-service
+      - ai-service
+
+
   user-db:
     image: postgres
     restart: always
@@ -63,8 +145,10 @@ services:
     environment:
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
+    volumes:
+      - keycloak_data:/opt/keycloak/data
     networks:
-      - fitness-app
+      fitness-app:
 
 
 
@@ -72,5 +156,6 @@ services:
 volumes:
   user-db:
   mongo-data:
+  keycloak_data:
 networks:
   fitness-app:
