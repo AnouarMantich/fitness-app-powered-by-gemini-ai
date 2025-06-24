@@ -11,6 +11,8 @@ import lombok.Data;
 @Builder
 public class RegisterRequest {
 
+    private String userId;
+
     @NotBlank(message = "The email is required")
     @Email(message = "Please enter a valid email address")
     private String email;

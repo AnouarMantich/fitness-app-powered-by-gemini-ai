@@ -1,9 +1,4 @@
 spring:
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://keycloak:8080/realms/fitness-oauth2/protocol/openid-connect/certs
   cloud:
     gateway:
       server:
@@ -21,9 +16,5 @@ spring:
               uri: lb://ACTIVITY-SERVICE
               predicates:
                 - Path= /api/v1/activities/**
-eureka:
-  client:
-    service-url:
-      defaultZone: http://discovery-service:8761/eureka/
 server:
   port: 9999

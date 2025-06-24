@@ -1,18 +1,3 @@
-spring:
-  data:
-    mongodb:
-      uri: mongodb://root:example@mongodb:27017/fitnessActivities?authSource=admin
 
-  rabbitmq:
-    host: rabbitmq
-    port: 5672
-    stream:
-      username: guest
-      password: guest
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://discovery-service:8761/eureka/
 server:
   port: 8082

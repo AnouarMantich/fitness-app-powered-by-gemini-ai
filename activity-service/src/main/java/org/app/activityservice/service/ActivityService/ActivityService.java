@@ -6,11 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.app.activityservice.config.RabbitMQConfig;
 import org.app.activityservice.dto.ActivityRequest;
 import org.app.activityservice.dto.ActivityResponse;
+import org.app.activityservice.exception.ActivityNotFoundException;
+import org.app.activityservice.exception.UserNotFoundException;
 import org.app.activityservice.mapper.ActivityMapper;
 import org.app.activityservice.model.Activity;
 import org.app.activityservice.repository.ActivityRepository;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,11 +36,13 @@ public class ActivityService {
 
     public ActivityResponse trackActivity(ActivityRequest request) {
 
+
         boolean validateUser = userValidationService.validateUser(request.getUserId());
         if (!validateUser) {
-            throw new RuntimeException("Invalid user"+request.getUserId());
+            throw new UserNotFoundException("User with id "+request.getUserId()+" doesn't exist");
         }
 
+        log.info("user with id {} found", request.getUserId());
         Activity activity= activityMapper.mapToActivity(request);
         Activity saved = activityRepository.save(activity);
 
@@ -61,7 +64,7 @@ public class ActivityService {
 
     public ActivityResponse getActivityById(String id) {
         return activityMapper.mapToActivityResponse(activityRepository.findById(id).orElseThrow(
-                ()->new RuntimeException("Activity with id "+ id +" not found")
+                ()->new ActivityNotFoundException("Activity with id "+id+" doesn't exist")
         ));
     }
 }

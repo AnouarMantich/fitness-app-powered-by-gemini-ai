@@ -2,6 +2,7 @@ package org.app.aiservice.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.app.aiservice.exception.ActivityNotFoundException;
 import org.app.aiservice.model.Recommendation;
 import org.app.aiservice.repository.RecommendationRepository;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class RecommendationService {
 
     public Recommendation getActivityRecommendation(String activityId) {
         return recommendationRepository.findByActivityId(activityId).orElseThrow(
-                ()-> new RuntimeException("Activity " + activityId + " not found")
+                ()-> new ActivityNotFoundException("Activity " + activityId + " not found")
         );
     }
 }

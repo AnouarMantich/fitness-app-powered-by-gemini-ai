@@ -19,6 +19,8 @@ public class ActivityAIService {
     private final GeminiService geminiService;
 
     public Recommendation generateRecommendation(Activity activity) {
+
+        log.info("Fetching recommendation from AI ... ");
         String prompt=createPromptForActivity(activity);
         String response=geminiService.getAnswer(prompt);
         log.info("Response from AI : "+response);
@@ -66,6 +68,8 @@ public class ActivityAIService {
                     .activityId(activity.getId())
                     .userId(activity.getUserId())
                     .activityType(String.valueOf(activity.getType()))
+                    .caloriesBurned(activity.getCaloriesBurned())
+                    .duration(activity.getDuration())
                     .recommendation(fullAnalysis.toString().trim())
                     .created(LocalDateTime.now())
                     .build();

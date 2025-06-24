@@ -1,6 +1,8 @@
 spring:
   application:
     name: discovery-service
+  profiles:
+    active: dev
 eureka:
   client:
     fetch-registry: false

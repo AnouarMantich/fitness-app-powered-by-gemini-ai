@@ -3,6 +3,7 @@ package org.app.userservice.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.app.userservice.Exception.UserNotFoundException;
 import org.app.userservice.dtos.RegisterRequest;
 import org.app.userservice.dtos.UserResponse;
 import org.app.userservice.model.User;
@@ -18,7 +19,7 @@ public class UserService {
 
     public UserResponse getUserProfile(String userId) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new RuntimeException("User with id " + userId + " not found")
+                () -> new UserNotFoundException("User with id " + userId + " not found")
         );
         return UserResponse.builder()
                 .id(user.getId())

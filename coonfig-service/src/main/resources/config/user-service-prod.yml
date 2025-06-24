@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://user-db:5432/user-db
+    password: password
+    username: user
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-service:8761/eureka/

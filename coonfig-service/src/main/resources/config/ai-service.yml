@@ -1,26 +1,6 @@
-spring:
-  data:
-    mongodb:
-      uri: mongodb://root:example@mongodb:27017/fitnessRecommendations?authSource=admin
-
-  rabbitmq:
-    host: rabbitmq
-    port: 5672
-    stream:
-      username: guest
-      password: guest
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://discovery-service:8761/eureka/
-
-
 server:
   port: 8083
-
-gemini:
-  api:
-    url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=
-    key: AIzaSyDzEYbND2cOlCoVZzJKBh4SUOiYCbp2yZE
-
+#gemini:
+#  api:
+#    url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=;GEMINI_API_KEY
+#    key: INPUT YOU GENIMI KEY
